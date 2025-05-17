@@ -24,7 +24,7 @@ jobs:
 
       - name: Run ingestion script 
         env:
-          LLAMA_INDEX_API_KEY: ${{ secrets.LLAMA_INDEX_API_KEY }}
+          LLAMA_CLOUD_API_KEY: ${{ secrets.LLAMA_INDEX_API_KEY }}
         run: |
           mv README.md README.md.txt
           python ingest.py

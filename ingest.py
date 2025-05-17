@@ -1,23 +1,20 @@
-from llama_cloud_services import LlamaParse
 import os
-from dotenv import load_dotenv
+from llama_index.readers.file import CodeReader
+from llama_index import SimpleDirectoryReader
 
-load_dotenv()
-LLAMA_INDEX_API_KEY = os.getenv("LLAMA_INDEX_API_KEY")
+file_extractor = {
+    ".php": CodeReader(),
+    ".js": CodeReader(),
+    ".md": CodeReader()
+}
 
-parser = LlamaParse(
-    api_key = LLAMA_INDEX_API_KEY,
+reader = SimpleDirectoryReader(
+    input_dir="./",
+    file_extractor=file_extractor
 )
-allowed_extensions = [
-    "txt",
-    "json",
-    "xml",
-]
-for root, dirs, files in os.walk("."):
-    for filename in files:
-        ext = filename.split(".")[-1]
-        if ext in allowed_extensions:
-            with open(os.path.join(root, filename), "r") as f:
-                content = f.read()
-                result = parser.parse(content)
-                print(result)
+documents = reader.load_data()
+
+for doc in documents:
+    print(f"ID: {doc.id_}")
+    print(f"Contenido:\n{doc.text[:500]}") 
+    print("-" * 80)
