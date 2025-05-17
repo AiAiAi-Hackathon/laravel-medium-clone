@@ -1,0 +1,30 @@
+#parse all files using llama_index python sdk
+name: Ingest
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install llama-index
+
+      - name: Run ingestion script 
+        env:
+          LLAMA_INDEX_API_KEY: ${{ secrets.LLAMA_INDEX_API_KEY }}
+        run: |
+          mv README.md README.md.txt
+          python ingest.py
