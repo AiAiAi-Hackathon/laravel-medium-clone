@@ -1,6 +1,6 @@
 import os
-from llama_index.readers.file import CodeReader
-from llama_index import SimpleDirectoryReader
+from llama_index.readers.code import CodeReader
+from llama_index.readers.file import SimpleDirectoryReader
 
 file_extractor = {
     ".php": CodeReader(),
