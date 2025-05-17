@@ -20,8 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install llama-index-readers-code
-          pip install llama-index-readers-file
+          pip install llama-index llama-cloud-services
 
       - name: Run ingestion script 
         env:
