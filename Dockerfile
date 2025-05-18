@@ -35,10 +35,6 @@ RUN git clone https://github.com/AiAiAi-Hackathon/laravel-medium-clone.git /tmp/
 # Now composer.json should be present
 RUN composer install --optimize-autoloader
 
-RUN npm install
-
-RUN npm run build
-
 RUN touch database/database.sqlite
 
 RUN php artisan migrate --force
