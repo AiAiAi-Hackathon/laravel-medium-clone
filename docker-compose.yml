@@ -28,6 +28,16 @@ services:
         networks:
             - laravel
 
+    mailpit:
+        image: axllent/mailpit:latest
+        container_name: mailpit
+        restart: unless-stopped
+        ports:
+            - "2525:1025"  # SMTP port
+            - "8025:8025"  # Web UI port
+        networks:
+            - laravel
+
 networks:
     laravel:
         driver: bridge
