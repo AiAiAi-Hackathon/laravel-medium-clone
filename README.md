@@ -39,12 +39,17 @@ management.
    npm install
    ```
 
-4. Copy the environment file:
+4. Build JavaScript dependencies:
+   ```bash
+   npm run build
+   ```
+
+5. Copy the environment file:
    ```bash
    cp .env.example .env
    ```
 
-5. Generate application key:
+6. Generate application key:
    ```bash
    php artisan key:generate
    ```
