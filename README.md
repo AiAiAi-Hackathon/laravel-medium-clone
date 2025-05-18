@@ -185,6 +185,43 @@ the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell
 via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## 🐳 Using Docker Compose
+
+1. **Make sure you have a `.env` file with your environment variables:**
+
+2. **Build and start the services:**
+
+   ```bash
+   docker-compose build --no-cache && docker-compose up -d
+   ```
+    This will build the Docker image if needed and start the containers.
+     
+        >> Web App - Blog
+        http://localhost:8000/
+
+        Name: Jane Doe
+        user: jane@acme.com
+        pwd: password
+
+        Name: John Doe
+        user: john@acme.com
+        pwd: password
+
+        >> MinIO
+        http://127.0.0.1:9090/login
+
+        user: minioadmin
+        pwd: minioadmin
+
+        >> Mailpit
+        http://localhost:8025/
+
+3. **To stop the services:**
+
+   ```bash
+   docker-compose down
+   ```
+   
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
