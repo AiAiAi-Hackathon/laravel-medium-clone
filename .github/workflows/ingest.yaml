@@ -1,9 +1,11 @@
 #parse all files using llama_index python sdk
 name: Ingest
+
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  #push:
+  #  branches:
+  #    - main
 
 jobs:
   ingest:
@@ -22,7 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install llama-index llama-cloud-services
 
-      - name: Run ingestion script 
+      - name: Run ingestion script
         env:
           LLAMA_CLOUD_API_KEY: ${{ secrets.LLAMA_INDEX_API_KEY }}
         run: |
