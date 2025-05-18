@@ -4,7 +4,7 @@ from llama_cloud_services import LlamaParse
 
 def parse(file_path):
     try:
-        data = LlamaParse(result_type="json").load_data(file_path)
+        data = LlamaParse(result_type="text").load_data(file_path)
     except Exception as e:
         print(f"Error parsing {file_path}: {e}")
         data = []
@@ -34,13 +34,12 @@ for d in all_dirs:
             full_path = os.path.join(d, entry)
             new_full_path = full_path + ".txt"
             os.rename(full_path, new_full_path)
-            print(f"Renamed {full_path} to {new_full_path}")
+            #print(f"Renamed {full_path} to {new_full_path}")
             try:
                 #documents = SimpleDirectoryReader(d).load_data()
                 doc = parse(new_full_path)
             except Exception as e:
-                print(f"{e}")
+                print(f"ParseFailed: {e} > {new_full_path}")
                 continue
-            print(f"ID: {doc.id_}")
-            print(f"Text: {doc.text[:50]}")
+            print(doc[0].get_content())
 
