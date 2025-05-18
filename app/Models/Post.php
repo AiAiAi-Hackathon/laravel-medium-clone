@@ -37,7 +37,7 @@ class Post extends Model implements HasMedia
             ->addMediaConversion('large')
             ->width(1200);
     }
-    
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('default')
@@ -76,16 +76,34 @@ class Post extends Model implements HasMedia
 
         return max(1, $minutes);
     }
-    
+
     public function imageUrl($conversionName = '')
     {
         $media = $this->getFirstMedia();
         if (!$media) {
             return null;
         }
-        if ($media->hasGeneratedConversion($conversionName)) {
-            return $media->getUrl($conversionName);
+
+        // Get the storage disk
+        $disk = \Storage::disk('minio');
+
+        // Get the path to the file
+        $path = $media->getPath($conversionName);
+        if (empty($path) && $media->hasGeneratedConversion($conversionName)) {
+            $path = $media->getPath($conversionName);
         }
-        return $media->getUrl();
+
+        // If path is still empty, use the original file path
+        if (empty($path)) {
+            $path = $media->getPath();
+        }
+
+        // Generate a temporary signed URL (valid for 5 minutes)
+        $url = $disk->temporaryUrl(
+            $path,
+            now()->addMinutes(5)
+        );
+
+        return $url;
     }
 }
