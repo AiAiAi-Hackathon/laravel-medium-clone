@@ -1,5 +1,5 @@
 import os
-from llama_index.core.readers import SimpleDirectoryReader
+#from llama_index.core.readers import SimpleDirectoryReader
 from llama_cloud_services import LlamaParse
 
 def parse(file_path):
@@ -35,13 +35,12 @@ for d in all_dirs:
             new_full_path = full_path + ".txt"
             os.rename(full_path, new_full_path)
             print(f"Renamed {full_path} to {new_full_path}")
-    try:
-        #documents = SimpleDirectoryReader(d).load_data()
-        documents = parse(d)
-    except Exception as e:
-        print(f"{e}")
-        continue
-    for doc in documents:
-        print(f"Document ID: {doc.id_}")
-        print(f"Document text: {doc.text[:50]}")
+            try:
+                #documents = SimpleDirectoryReader(d).load_data()
+                doc = parse(new_full_path)
+            except Exception as e:
+                print(f"{e}")
+                continue
+            print(f"ID: {doc.id_}")
+            print(f"Text: {doc.text[:50]}")
 
