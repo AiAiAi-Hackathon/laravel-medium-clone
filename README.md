@@ -28,7 +28,22 @@ management.
 
 2. Build and start the services:
 
-Yes, only one command ;)
+    ```bash
+    touch database/database.sqlite
+    ```
+
+    ```bash
+    php artisan migrate --force
+    ```
+
+    ```bash
+    php artisan db:seed --force
+    ```
+
+    ```bash
+    npm install && npm run build
+    ```
+
    ```bash
    docker-compose build --no-cache && docker-compose up -d
    ```
