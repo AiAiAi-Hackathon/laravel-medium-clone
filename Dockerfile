@@ -27,11 +27,23 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy app files
-COPY . .
+# Clone to a temp folder, then copy
+RUN git clone https://github.com/AiAiAi-Hackathon/laravel-medium-clone.git /tmp/app \
+    && cp -r /tmp/app/. /var/www \
+    && rm -rf /tmp/app
 
-# Install PHP dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# Now composer.json should be present
+RUN composer install --optimize-autoloader
+
+RUN npm install
+
+RUN npm run build
+
+RUN touch database/database.sqlite
+
+RUN php artisan migrate --force
+
+RUN php artisan db:seed --force
 
 # Install JS dependencies
 RUN npm install && npm run build

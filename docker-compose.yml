@@ -13,11 +13,21 @@ services:
             - "9000:9000"
         networks:
             - laravel
-        environment:
-            - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
-            - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
-            - MINIO_ENDPOINT=${MINIO_ENDPOINT}
-            - MINIO_BUCKET=${MINIO_BUCKET}
+        env_file:
+            - .env
+        command: >
+            sh -c "
+            if [ ! -f .env ]; then
+              echo 'Laravel .env missing. Please add it.';
+              exit 1;
+            fi;
+
+            if ! grep -q '^APP_KEY=base64:' .env; then
+              php artisan key:generate;
+            fi;
+
+            php-fpm
+            "
 
     web:
         image: nginx:alpine
