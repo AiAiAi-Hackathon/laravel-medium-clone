@@ -1,20 +1,35 @@
 import os
-from llama_index.readers.code import CodeReader
-from llama_index.readers.file import SimpleDirectoryReader
+from llama_index.core.readers import SimpleDirectoryReader
+from llama_cloud_services import LlamaParse
 
-file_extractor = {
-    ".php": CodeReader(),
-    ".js": CodeReader(),
-    ".md": CodeReader()
-}
+def parse(file_path):
+    data = LlamaParse(result_type="json").load_data(file_path)
+    return data
+    
+all_dirs = ["."]
 
-reader = SimpleDirectoryReader(
-    input_dir="./",
-    file_extractor=file_extractor
-)
-documents = reader.load_data()
+excluded_dirs = [".pylibs", ".git"]
 
-for doc in documents:
-    print(f"ID: {doc.id_}")
-    print(f"Contenido:\n{doc.text[:500]}") 
-    print("-" * 80)
+def get_all_dirs(path):
+    print(f".......Scanning directory: {path}")
+    for entry in os.listdir(path):
+        if entry in excluded_dirs:
+            continue
+        full_path = os.path.join(path, entry)
+        if os.path.isdir(full_path):
+            all_dirs.append(full_path)
+            get_all_dirs(full_path)
+
+get_all_dirs("./")
+
+for d in all_dirs:
+    try:
+        #documents = SimpleDirectoryReader(d).load_data()
+        documents = parse(d)
+    except Exception as e:
+        print(f"{e}")
+        continue
+    for doc in documents:
+        print(f"Document ID: {doc.id_}")
+        print(f"Document text: {doc.text[:50]}")
+
